@@ -1,4 +1,4 @@
-import { createEffect, Resource, Suspense } from "solid-js";
+import { createEffect, Resource, Suspense, useTransition } from "solid-js";
 import { RouteSectionProps, useParams } from "@solidjs/router";
 
 import { cache, createAsync } from "@solidjs/router";
@@ -8,13 +8,13 @@ export const getData = cache(async (id: string) => {
   await new Promise((res) =>
     setTimeout(() => {
       return res(true);
-    }, 2000)
+    }, 2000),
   );
   return `some data for ${id}`;
 }, "data"); // used as cache key + serialized arguments
 
-export default function About(
-  props: RouteSectionProps<ReturnType<TestDataType>>
+export default function TestPage(
+  props: RouteSectionProps<ReturnType<TestDataType>>,
 ) {
   const somedata = createAsync(() => getData(props.params.id));
 
@@ -24,8 +24,13 @@ export default function About(
     console.log(props.data());
   });
 
+  const [pending, start] = useTransition();
+
   return (
-    <section class="bg-green-100 text-gray-700 p-8">
+    <section
+      class="bg-green-100 text-gray-700 p-8"
+      classList={{ "opacity-50": pending() }}
+    >
       <h1 class="text-2xl font-bold">Test {params.id}</h1>
       <Suspense fallback="loading">
         <h2>{somedata()}</h2>
