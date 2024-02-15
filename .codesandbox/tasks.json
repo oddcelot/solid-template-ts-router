@@ -11,23 +11,23 @@
   "tasks": {
     "start": {
       "name": "start",
-      "command": "pnpm start",
-      "runAtStart": false
+      "command": "pnpm start"
     },
     "dev": {
       "name": "dev",
       "command": "pnpm dev",
-      "runAtStart": true
+      "runAtStart": true,
+      "preview": {
+        "port": 3000
+      }
     },
     "build": {
       "name": "build",
-      "command": "pnpm build",
-      "runAtStart": false
+      "command": "pnpm build"
     },
     "serve": {
       "name": "serve",
-      "command": "pnpm serve",
-      "runAtStart": false
+      "command": "pnpm serve"
     }
   }
 }
