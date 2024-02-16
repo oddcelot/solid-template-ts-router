@@ -1,14 +1,14 @@
 import type { RouteLoadFunc } from "@solidjs/router";
-import { createResource, Resource } from "solid-js";
+import { createResource, ResourceReturn } from "solid-js";
 import { getData } from "./test";
 
-const TestData: RouteLoadFunc<Resource<string>> = ({ params }) => {
-  const [data] = createResource(() => {
+const TestData: RouteLoadFunc<ResourceReturn<string>> = ({ params }) => {
+  const resource = createResource(() => {
     console.log("running loader func", params.id);
     return getData(params.id);
   });
 
-  return data;
+  return resource;
 };
 
 export default TestData;
