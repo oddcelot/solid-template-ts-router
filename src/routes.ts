@@ -5,6 +5,9 @@ import Home from "./pages/home";
 import AboutData from "./pages/about.data";
 import TestData from "./pages/test.data";
 import TestPage from "./pages/test";
+import CachedPage from "./pages/cached";
+import ConfigPage from "./pages/config";
+import { dataLoader } from "./pages/cached.data";
 
 export const routes: RouteDefinition[] = [
   {
@@ -20,6 +23,15 @@ export const routes: RouteDefinition[] = [
     path: "/test/:id",
     component: TestPage,
     load: TestData,
+  },
+  {
+    path: "/cached/:id",
+    component: CachedPage,
+    load: dataLoader,
+  },
+  {
+    path: "/config",
+    component: ConfigPage,
   },
   {
     path: "**",

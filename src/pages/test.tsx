@@ -1,74 +1,64 @@
-import {
-  createEffect,
-  Suspense,
-  useTransition,
-  Component,
-  createResource,
-} from "solid-js";
+import { createEffect, Suspense, Component, createResource } from "solid-js";
 import { RouteSectionProps, useParams } from "@solidjs/router";
 
 import { cache, createAsync } from "@solidjs/router";
 import { TestDataType } from "./test.data";
+import { delay } from "msw";
+import { config } from "./config";
 
 export const getData = cache(async (id: string) => {
-  await new Promise((res) =>
-    setTimeout(() => {
-      return res(true);
-    }, 2000),
-  );
+  await delay(config.delay);
   return `some data for ${id}`;
-}, "data"); // used as cache key + serialized arguments
+}, "test");
 
 const ChildComponent: Component<{ data: string }> = (props) => {
   const params = useParams();
 
   return (
     <div>
-      <h2>this is {params.id}</h2>
-      <span>this is {props.data}</span>
+      <h2>
+        <code>params.id: {params.id}</code>
+      </h2>
+      <pre>{JSON.stringify(props.data, undefined, 2)}</pre>
     </div>
   );
 };
 
 export default function TestPage(
-  props: RouteSectionProps<ReturnType<TestDataType>>,
+  props: RouteSectionProps<ReturnType<TestDataType>>
 ) {
   const params = useParams();
   const [routeData] = props.data;
 
   /* using createAsync will trigger a transition */
-  // const somedata = createAsync(() => getData(params.id));
+  const somedata = createAsync(() => getData(params.id));
 
   /* using createResource and refetching on param change will NOT trigger a transition */
-  const [somedata, { refetch }] = createResource(params.id, () =>
-    getData(params.id),
-  );
+  // const [somedata, { refetch }] = createResource(params.id, () =>
+  //   getData(params.id)
+  // );
 
-  createEffect(() => {
-    params.id && refetch();
-  });
-
-  const [pending, start] = useTransition();
+  // createEffect(() => {
+  //   params.id && refetch();
+  // });
 
   return (
-    <section
-      class="bg-green-100 text-gray-700 p-8"
-      classList={{ "opacity-50": pending() }}
-    >
+    <>
       <h1 class="text-2xl font-bold">Test {params.id}</h1>
 
-      <Suspense fallback="loading…">
-        <ChildComponent data={somedata()} />
-      </Suspense>
-
-      <p class="mt-4">A page all about this website.</p>
-      <pre>{routeData()}</pre>
-      <p>
-        <span>This is load data: </span>
-        <Suspense fallback={<span>{routeData.state}…</span>}>
-          <span>{routeData()}</span>
+      <section class="bg-slate-600 rounded-lg p-4">
+        <h2 class="text-l font-bold">local data</h2>
+        <Suspense fallback="loading data…">
+          <ChildComponent data={somedata()} />
         </Suspense>
-      </p>
-    </section>
+      </section>
+
+      <section class="bg-slate-600 rounded-lg p-4">
+        <h2 class="text-l font-bold">route data injected from loader</h2>
+        <Suspense fallback={<span>attached data: {routeData.state}…</span>}>
+          <pre>{JSON.stringify(routeData(), undefined, 2)}</pre>
+        </Suspense>
+      </section>
+    </>
   );
 }
