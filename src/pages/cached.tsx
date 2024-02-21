@@ -1,27 +1,19 @@
-import {
-  createEffect,
-  Suspense,
-  useTransition,
-  Component,
-  onCleanup,
-  ErrorBoundary,
-} from "solid-js";
+import { Suspense, useTransition, Component, ErrorBoundary } from "solid-js";
 import { RouteSectionProps, useParams } from "@solidjs/router";
-
 import { createAsync, useBeforeLeave } from "@solidjs/router";
 import { getCachedData, getCachedDataNext } from "./cached.data";
-
 import { Skeleton } from "@kobalte/core";
-
-console.log(process.env.NODE_ENV);
 
 const ChildComponent: Component<{ data: string }> = (props) => {
   const params = useParams();
 
   return (
     <div>
-      <h2>child in {params.id}</h2>
-      <span>child data: {props.data}</span>
+      <h3>
+        child in <code>{params.id}</code>
+      </h3>
+      <span>child data:</span>
+      <pre>{props.data}</pre>
     </div>
   );
 };
@@ -32,10 +24,12 @@ const ChildComponentAsync: Component<{ id: string }> = (props) => {
 
   return (
     <div>
-      <h2>async child in {params.id}</h2>
+      <h3>
+        async child in <code>{params.id}</code>
+      </h3>
       <Suspense fallback="loading data…">
         <p>
-          child data: <code>{JSON.stringify(data())}</code>
+          child data: <code>{JSON.stringify(data(), null, 2)}</code>
         </p>
       </Suspense>
     </div>
@@ -45,16 +39,7 @@ const ChildComponentAsync: Component<{ id: string }> = (props) => {
 export default function CachedPage(props: RouteSectionProps) {
   const params = useParams();
   const [getData, controller] = getCachedDataNext();
-  const [pending, start] = useTransition();
-
-  useBeforeLeave((ev) => {
-    console.log("beforeleave", ev);
-
-    controller.abort("route change");
-    if (ev.to !== ev.from.pathname) {
-      controller.abort("route change");
-    }
-  });
+  const [pending] = useTransition();
 
   const data = createAsync(() => {
     console.log(`running createAsync for ${params.id}`);
@@ -62,9 +47,14 @@ export default function CachedPage(props: RouteSectionProps) {
     return getData(params.id);
   });
 
-  onCleanup(() => {
-    console.log("running cleanup");
+  useBeforeLeave((ev) => {
+    controller.abort("route change");
+    if (ev.to !== ev.from.pathname) {
+      controller.abort("route change");
+    }
   });
+
+  const displayData = () => JSON.stringify(data(), null, 2);
 
   return (
     <>
@@ -82,32 +72,47 @@ export default function CachedPage(props: RouteSectionProps) {
           <Suspense
             fallback={
               <Skeleton.Root>
-                <ChildComponent data={JSON.stringify(data())} />
+                <ChildComponent data={displayData()} />
               </Skeleton.Root>
             }
           >
-            <ChildComponent data={JSON.stringify(data())} />
+            <ChildComponent data={displayData()} />
           </Suspense>
         </ErrorBoundary>
       </section>
 
-      {/* <section class="bg-slate-600 rounded-lg p-4">
+      <section class="bg-slate-600 rounded-lg p-4">
         <ChildComponentAsync id={params.id} />
       </section>
 
+      <Skeleton.Root class="skeleton" visible={!data() || pending()}>
+        <section class="bg-slate-600 rounded-lg p-4">
+          <Suspense fallback="loading data…">
+            <ChildComponent data={displayData()} />
+          </Suspense>
+        </section>
+      </Skeleton.Root>
+
       <section class="bg-slate-600 rounded-lg p-4">
-        <Skeleton.Root class="skeleton" visible={!data() || pending()}>
-          <Suspense
-            fallback={
-              <Skeleton.Root>
-                <ChildComponent data={"fake"} />
-              </Skeleton.Root>
-            }
-          >
-            <ChildComponent data={JSON.stringify(data())} />
+        <Suspense
+          fallback={
+            /* this won't be shown while tranisitioning within a route, since Suspense is not emptied */
+            <Skeleton.Root class="skeleton">
+              <ChildComponent data={"fake data"} />
+            </Skeleton.Root>
+          }
+        >
+          <ChildComponent data={displayData()} />
+        </Suspense>
+      </section>
+
+      <section class="bg-slate-600 rounded-lg p-4">
+        <Skeleton.Root class="skeleton" visible={!displayData() || pending()}>
+          <Suspense fallback={<ChildComponent data={"fake data"} />}>
+            <ChildComponent data={displayData()} />
           </Suspense>
         </Skeleton.Root>
-      </section> */}
+      </section>
     </>
   );
 }

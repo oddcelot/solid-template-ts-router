@@ -1,5 +1,20 @@
-@layer tailwind {
+@layer resets {
   @tailwind base;
+}
+
+@layer components {
   @tailwind components;
+}
+
+@layer app {
+  section {
+    @apply bg-slate-600 rounded-lg p-4;
+  }
+}
+
+@layer utils {
   @tailwind utilities;
+
+  @layer utilities {
+  }
 }

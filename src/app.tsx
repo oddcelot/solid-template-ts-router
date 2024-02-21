@@ -1,10 +1,17 @@
-import { useTransition, type ParentComponent } from "solid-js";
+import { useTransition, type ParentComponent, createSignal } from "solid-js";
 import { A, useLocation } from "@solidjs/router";
 import Config from "./pages/config";
+import Resizer from "./components/Resizer";
+import { makePersisted } from "@solid-primitives/storage";
 
 const App: ParentComponent = (props) => {
   const location = useLocation();
   const [pending] = useTransition();
+  const [sidebarWidth, setSidebarWidth] = makePersisted(createSignal(300), {
+    storage: sessionStorage,
+  });
+
+  let sectionConfig: HTMLElement;
 
   const Item: ParentComponent<{ href: string }> = (props) => {
     return (
@@ -48,12 +55,26 @@ const App: ParentComponent = (props) => {
       </nav>
 
       <main
-        class="col-span-3 row-span-5 flex flex-col gap-4 rounded-xl overflow-hidden bg-slate-700 p-6"
+        class="col-span-3 row-span-5 flex flex-col gap-4 rounded-xl overflow-auto bg-slate-700 p-6"
         classList={{ "animate-pulse": pending() }}
       >
         {props.children}
       </main>
-      <aside class="col-span-1 row-span-5 grid rounded-xl overflow-hidden bg-slate-800 p-6 min-w-max">
+      <aside
+        ref={sectionConfig}
+        class="relative col-span-1 row-span-5 grid rounded-xl bg-slate-800 p-6 min-w-60"
+        style={{ width: `${sidebarWidth()}px` }}
+      >
+        <Resizer
+          direction="horizontal"
+          class="group absolute inset-2 right-auto left-0 -translate-x-full w-4 grid"
+          onResizeEnd={() =>
+            setSidebarWidth(sectionConfig.getBoundingClientRect().width)
+          }
+        >
+          <div class="bg-slate-400 opacity-20 rounded-full w-1 h-16 place-self-center transition group-hover:opacity-60 group-data-[resizing=true]:opacity-100 group-data-[resizing=true]:scale-110" />
+        </Resizer>
+
         <Config />
       </aside>
     </>
