@@ -1,10 +1,10 @@
 @layer app {
-  .Resizer {
-    &[data-direction="horizontal"] {
-      cursor: col-resize;
+    .Resizer {
+        &[data-direction='horizontal'] {
+            cursor: col-resize;
+        }
+        &[data-direction='vertical'] {
+            cursor: row-resize;
+        }
     }
-    &[data-direction="vertical"] {
-      cursor: row-resize;
-    }
-  }
 }

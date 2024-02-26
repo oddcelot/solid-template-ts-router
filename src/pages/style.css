@@ -1,43 +1,43 @@
 @layer app {
-  .skeleton {
-    height: auto;
-    width: 100%;
-    position: relative;
-    transform: translateZ(0);
-    @apply rounded-md;
-  }
-
-  .skeleton[data-animate="true"]::after {
-    animation: skeleton-fade 1500ms linear infinite;
-  }
-
-  .skeleton[data-visible="true"] {
-    overflow: hidden;
-  }
-
-  .skeleton[data-visible="true"]::before {
-    position: absolute;
-    content: "";
-    inset: 0;
-    z-index: 10;
-    @apply bg-slate-700;
-  }
-
-  .skeleton[data-visible="true"]::after {
-    position: absolute;
-    content: "";
-    inset: 0;
-    z-index: 11;
-    @apply bg-slate-900;
-  }
-
-  @keyframes skeleton-fade {
-    0%,
-    100% {
-      opacity: 0.4;
+    .skeleton {
+        height: auto;
+        width: 100%;
+        position: relative;
+        transform: translateZ(0);
+        @apply rounded-md;
     }
-    50% {
-      opacity: 1;
+
+    .skeleton[data-animate='true']::after {
+        animation: skeleton-fade 1500ms linear infinite;
     }
-  }
+
+    .skeleton[data-visible='true'] {
+        overflow: hidden;
+    }
+
+    .skeleton[data-visible='true']::before {
+        position: absolute;
+        content: '';
+        inset: 0;
+        z-index: 10;
+        @apply bg-slate-700;
+    }
+
+    .skeleton[data-visible='true']::after {
+        position: absolute;
+        content: '';
+        inset: 0;
+        z-index: 11;
+        @apply bg-slate-900;
+    }
+
+    @keyframes skeleton-fade {
+        0%,
+        100% {
+            opacity: 0.4;
+        }
+        50% {
+            opacity: 1;
+        }
+    }
 }

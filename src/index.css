@@ -1,66 +1,67 @@
 @layer setup {
-  @tailwind base;
+    @tailwind base;
 
-  h1 {
-    @apply text-2xl font-bold;
-  }
+    h1 {
+        @apply text-2xl font-bold;
+    }
 
-  section {
-    @apply bg-slate-600 rounded-lg p-4;
-  }
+    section {
+        @apply rounded-lg bg-slate-600 p-4;
+    }
 
-  button {
-    @apply rounded-full bg-slate-500 py-2 px-4 text-sm font-medium text-white hover:bg-slate-600 focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/50 active:text-slate-300;
-  }
+    button {
+        @apply rounded-full bg-slate-500 px-4 py-2 text-sm font-medium text-white hover:bg-slate-600 focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/50 active:text-slate-300;
+    }
 
-  .btn-primary {
-    @apply rounded-full bg-blue-300 py-2 px-4 text-sm font-semibold text-slate-900 hover:bg-blue-200 focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-300/50 active:bg-blue-500;
-  }
+    .btn-primary {
+        @apply rounded-full bg-blue-300 px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-blue-200 focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-300/50 active:bg-blue-500;
+    }
 
-  .custom-scrollbar {
-    --scrollbar-color-thumb: theme("colors.slate.100/0.3");
-    /* --scrollbar-color-track: transparent; */
-    --scrollbar-color-track: theme("colors.slate.100/0.1");
-    --scrollbar-width: thin;
-    --scrollbar-width-legacy: 6px;
-    --scrollbar-radius: calc(var(--scrollbar-width-legacy) / 2);
-  }
-
-  /* Modern browsers with `scrollbar-*` support */
-  /* @supports not selector(::-webkit-scrollbar) and (scrollbar-width: auto) { */
-  @supports (scrollbar-width: auto) {
     .custom-scrollbar {
-      /* clip-path: inset(0% 100% 0% 100% round 1rem); */
-      scrollbar-gutter: stable;
-      scrollbar-color: var(--scrollbar-color-thumb) var(--scrollbar-color-track);
-      scrollbar-width: var(--scrollbar-width);
-    }
-  }
-
-  /* Legacy browsers with `::-webkit-scrollbar-*` support */
-  @supports selector(::-webkit-scrollbar) {
-    .custom-scrollbar {
-      scrollbar-gutter: stable;
-      overflow: scroll;
+        --scrollbar-color-thumb: theme('colors.slate.100/0.3');
+        /* --scrollbar-color-track: transparent; */
+        --scrollbar-color-track: theme('colors.slate.100/0.1');
+        --scrollbar-width: thin;
+        --scrollbar-width-legacy: 6px;
+        --scrollbar-radius: calc(var(--scrollbar-width-legacy) / 2);
     }
 
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: var(--scrollbar-color-thumb);
-      border-radius: var(--scrollbar-radius);
+    /* Modern browsers with `scrollbar-*` support */
+    /* @supports not selector(::-webkit-scrollbar) and (scrollbar-width: auto) { */
+    @supports (scrollbar-width: auto) {
+        .custom-scrollbar {
+            /* clip-path: inset(0% 100% 0% 100% round 1rem); */
+            scrollbar-gutter: stable;
+            scrollbar-color: var(--scrollbar-color-thumb)
+                var(--scrollbar-color-track);
+            scrollbar-width: var(--scrollbar-width);
+        }
     }
-    .custom-scrollbar::-webkit-scrollbar-track {
-      background: var(--scrollbar-color-track);
-      border-radius: var(--scrollbar-radius);
-    }
-    .custom-scrollbar::-webkit-scrollbar {
-      max-width: var(--scrollbar-width-legacy);
-      max-height: var(--scrollbar-width-legacy);
-      margin: 1rem;
-      border-radius: var(--scrollbar-radius);
-    }
-  }
 
-  /* :where(html) {
+    /* Legacy browsers with `::-webkit-scrollbar-*` support */
+    @supports selector(::-webkit-scrollbar) {
+        .custom-scrollbar {
+            scrollbar-gutter: stable;
+            overflow: scroll;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-color-thumb);
+            border-radius: var(--scrollbar-radius);
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: var(--scrollbar-color-track);
+            border-radius: var(--scrollbar-radius);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            max-width: var(--scrollbar-width-legacy);
+            max-height: var(--scrollbar-width-legacy);
+            margin: 1rem;
+            border-radius: var(--scrollbar-radius);
+        }
+    }
+
+    /* :where(html) {
     scrollbar-color: red blue;
     scrollbar-width: thin;
   }
@@ -96,13 +97,13 @@
 @tailwind components;
 
 @layer app {
-  @layer components {
-  }
+    @layer components {
+    }
 }
 
 @layer utils {
-  @tailwind utilities;
+    @tailwind utilities;
 
-  @layer utilities {
-  }
+    @layer utilities {
+    }
 }
