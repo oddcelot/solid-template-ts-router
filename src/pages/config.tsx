@@ -1,17 +1,21 @@
 import { makePersisted } from "@solid-primitives/storage";
 import { DelayMode } from "msw";
-import { createStore } from "solid-js/store";
+import { createStore, reconcile } from "solid-js/store";
 
 export type Config = {
   delay: number | DelayMode;
   customDelay: number;
+  sidebarWidth: number;
+};
+
+const defaultConfig: Config = {
+  delay: "real",
+  customDelay: 3000,
+  sidebarWidth: 300,
 };
 
 export const [config, setConfig] = makePersisted(
-  createStore<Config>({
-    delay: "real",
-    customDelay: 3000,
-  }),
+  createStore<Config>({ ...defaultConfig }),
   {
     storage: sessionStorage,
   }
@@ -19,7 +23,7 @@ export const [config, setConfig] = makePersisted(
 
 export default function ConfigPage() {
   return (
-    <section class="grid gap-4">
+    <div class="grid place-content-between justify-stretch place-items-stretch">
       <fieldset class="col-span-full grid grid-cols-[min-content_auto] gap-x-4 place-content-start">
         <legend class="col-span-full">Select a delay mode:</legend>
 
@@ -72,6 +76,13 @@ export default function ConfigPage() {
           }}
         />
       </fieldset>
-    </section>
+      <button
+        class="btn-primary"
+        type="button"
+        onClick={() => setConfig(reconcile(defaultConfig))}
+      >
+        Reset Config
+      </button>
+    </div>
   );
 }

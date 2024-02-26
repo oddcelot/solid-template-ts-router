@@ -13,11 +13,11 @@ export default function About(
 
   return (
     <>
-      <h1 class="text-2xl font-bold">About</h1>
+      <h1>About</h1>
 
       <p>A page all about this website.</p>
 
-      <section class="bg-slate-600 rounded-lg p-4">
+      <section>
         <span>We love</span>
         <Suspense fallback={<span>...</span>}>
           <span>&nbsp;{name()}</span>

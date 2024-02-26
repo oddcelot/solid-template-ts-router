@@ -28,9 +28,8 @@ const ChildComponentAsync: Component<{ id: string }> = (props) => {
         async child in <code>{params.id}</code>
       </h3>
       <Suspense fallback="loading data…">
-        <p>
-          child data: <code>{JSON.stringify(data(), null, 2)}</code>
-        </p>
+        <span>child data:</span>
+        <pre>{JSON.stringify(data(), null, 2)}</pre>
       </Suspense>
     </div>
   );
@@ -58,16 +57,16 @@ export default function CachedPage(props: RouteSectionProps) {
 
   return (
     <>
-      <h1 class="text-2xl font-bold">Cached {params.id}</h1>
+      <h1>Cached {params.id}</h1>
 
-      <section class="bg-slate-600 rounded-lg p-4">
+      <section>
         <details open={false}>
           <summary>initial route props</summary>
           <pre>{JSON.stringify(props, undefined, 2)}</pre>
         </details>
       </section>
 
-      <section class="bg-slate-600 rounded-lg p-4">
+      <section>
         <ErrorBoundary fallback={(err) => err.message}>
           <Suspense
             fallback={
@@ -81,19 +80,19 @@ export default function CachedPage(props: RouteSectionProps) {
         </ErrorBoundary>
       </section>
 
-      <section class="bg-slate-600 rounded-lg p-4">
+      <section>
         <ChildComponentAsync id={params.id} />
       </section>
 
       <Skeleton.Root class="skeleton" visible={!data() || pending()}>
-        <section class="bg-slate-600 rounded-lg p-4">
+        <section>
           <Suspense fallback="loading data…">
             <ChildComponent data={displayData()} />
           </Suspense>
         </section>
       </Skeleton.Root>
 
-      <section class="bg-slate-600 rounded-lg p-4">
+      <section>
         <Suspense
           fallback={
             /* this won't be shown while tranisitioning within a route, since Suspense is not emptied */
@@ -106,7 +105,7 @@ export default function CachedPage(props: RouteSectionProps) {
         </Suspense>
       </section>
 
-      <section class="bg-slate-600 rounded-lg p-4">
+      <section>
         <Skeleton.Root class="skeleton" visible={!displayData() || pending()}>
           <Suspense fallback={<ChildComponent data={"fake data"} />}>
             <ChildComponent data={displayData()} />

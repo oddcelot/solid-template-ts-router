@@ -44,16 +44,16 @@ export default function TestPage(
 
   return (
     <>
-      <h1 class="text-2xl font-bold">Test {params.id}</h1>
+      <h1>Test {params.id}</h1>
 
-      <section class="bg-slate-600 rounded-lg p-4">
+      <section>
         <h2 class="text-l font-bold">local data</h2>
         <Suspense fallback="loading data…">
           <ChildComponent data={somedata()} />
         </Suspense>
       </section>
 
-      <section class="bg-slate-600 rounded-lg p-4">
+      <section>
         <h2 class="text-l font-bold">route data injected from loader</h2>
         <Suspense fallback={<span>attached data: {routeData.state}…</span>}>
           <pre>{JSON.stringify(routeData(), undefined, 2)}</pre>

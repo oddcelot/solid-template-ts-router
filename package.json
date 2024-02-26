@@ -1,31 +1,44 @@
 {
-  "name": "vite-template-solid",
-  "version": "0.0.0",
+  "name": "solid-router-playground",
+  "version": "0.1.0",
   "description": "",
+  "license": "MIT",
+  "packageManager": "^pnpm@8.15.4",
+  "engines": {
+    "node": ">=21.0.0"
+  },
+  "type": "module",
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
+  },
   "scripts": {
-    "postinstall": "msw init ./public",
+    "postinstall": "msw init ./public --save",
     "start": "vite",
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview"
   },
-  "license": "MIT",
   "devDependencies": {
     "autoprefixer": "10.4.17",
     "msw": "2.2.1",
     "postcss": "8.4.35",
-    "postcss-nesting": "^12.0.3",
+    "postcss-load-config": "5.0.3",
+    "postcss-nesting": "12.0.3",
+    "prettier": "3.2.5",
+    "prettier-plugin-tailwindcss": "0.5.11",
     "solid-devtools": "0.29.3",
     "tailwindcss": "3.4.1",
-    "vite": "5.1.3",
+    "vite": "5.1.4",
     "vite-plugin-mkcert": "1.17.3",
     "vite-plugin-solid": "2.10.1"
   },
   "dependencies": {
     "@kobalte/core": "0.12.1",
-    "@solid-primitives/resource": "^0.1.1",
-    "@solid-primitives/storage": "^2.1.2",
-    "@solidjs/router": "0.12.3",
+    "@solid-primitives/resource": "0.1.1",
+    "@solid-primitives/storage": "2.1.2",
+    "@solidjs/router": "0.12.4",
     "solid-js": "1.8.15"
   }
 }
